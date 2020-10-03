@@ -1,0 +1,21 @@
+{
+  "name": "prostock",
+  "version": "1.0.0",
+  "description": "Online Shop for african photographers",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server/server",
+    "server": "nodemon server/server",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "author": "Thato Motaung",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "nodemon": "^2.0.4"
+  }
+}
