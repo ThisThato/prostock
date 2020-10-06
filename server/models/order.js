@@ -1,4 +1,4 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 
 const orderSchema = mongoose.Schema(
   {
@@ -64,7 +64,7 @@ const orderSchema = mongoose.Schema(
       required: true,
       default: false,
     },
-    deliverdAt: {
+    deliveredAt: {
       type: Date,
     },
   },
