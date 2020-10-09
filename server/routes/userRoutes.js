@@ -1,6 +1,10 @@
 import express from "express";
 const router = express.Router();
-import { authUser, getUserProfile } from "../controllers/userController.js";
+import {
+  authUser,
+  getUserProfile,
+  registerUser,
+} from "../controllers/userController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
 //Fetch all products
@@ -12,5 +16,10 @@ router.post("/login", authUser);
 // GET  /api/users/login
 // private
 router.route("/profile").get(protect, getUserProfile);
+
+// Register a new User
+// POST  /api/users
+// public
+router.route("/").post(registerUser);
 
 export default router;
