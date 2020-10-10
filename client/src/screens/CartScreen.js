@@ -34,8 +34,8 @@ const CartScreen = ({ match, location, history }) => {
     dispatch(removeFromCart(id));
   };
 
-  const checkOutHandler = () => {
-    //history.push("/login?redirect=shipping");
+  const checkoutHandler = () => {
+    history.push("/login?redirect=shipping");
     // history.push("/shipping");
     //console.log("Shipping");
   };
@@ -115,7 +115,7 @@ const CartScreen = ({ match, location, history }) => {
                 type='Button'
                 className='btn-block'
                 disabled={cartItems.length === 0}
-                onClick={checkOutHandler()}
+                onClick={checkoutHandler}
               >
                 Proceed to Checkout
               </Button>
