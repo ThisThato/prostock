@@ -6,6 +6,7 @@ import connectDB from "./config/db.js";
 import { notFound, errorHandler } from "./middleware/errormiddleware.js";
 import productRoutes from "./routes/productRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 
 dotenv.config();
 
@@ -21,9 +22,10 @@ app.get("/", (req, res) => {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-//Products and User Routes
+//Products, User and Order Routes
 app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/orders", orderRoutes);
 
 //Middleware error catching
 app.use(notFound);
