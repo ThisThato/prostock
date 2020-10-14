@@ -41,17 +41,16 @@ const addOrderItems = asynchandler(async (req, res) => {
 //GET  /api/orders
 //public
 const getOrderById = asynchandler(async (req, res) => {
-  const order = await (await Order.findById(req.params.id)).populate(
+  const order = await Order.findById(req.params.id).populate(
     "user",
-    "name",
-    "email"
+    "name email"
   );
 
   if (order) {
     res.json(order);
   } else {
     res.status(404);
-    throw new Error("Not Found");
+    throw new Error("Order Not Found");
   }
 });
 
