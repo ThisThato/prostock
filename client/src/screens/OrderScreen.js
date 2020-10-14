@@ -14,8 +14,10 @@ const OrderScreen = ({ match }) => {
   const { order, loading, error } = orderDetails;
 
   useEffect(() => {
-    disptach(getOrderDetails(orderId));
-  }, [disptach, orderId]);
+    if (!order || order._id !== orderId) {
+      disptach(getOrderDetails(orderId));
+    }
+  }, [disptach, order, orderId]);
 
   //Calculate Prices
   const addDecimals = (num) => {
@@ -23,9 +25,7 @@ const OrderScreen = ({ match }) => {
   };
 
   //   if(!loading){
-
   //   }
-
   //   order.itemsPrice = addDecimals(
   //     order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
   //   );
