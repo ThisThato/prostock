@@ -1,15 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Row, Col, ListGroup, Image, Button } from "react-bootstrap";
+import { PayPalButton } from "react-paypal-button-v2";
+import { Row, Col, ListGroup, Image } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { getOrderDetails } from "../actions/orderActions";
+import { getOrderDetails, payOrder } from "../actions/orderActions";
+import { ORDER_PAY_RESET } from "../constants/orderConstants";
 
 const OrderScreen = ({ match }) => {
-  const disptach = useDispatch();
+  const dispatch = useDispatch();
   const orderId = match.params.id;
+
+  const [sdkReady, setSdkReady] = useState(false);
+
+  //from the redux store && reducer
+  const orderPay = useSelector((state) => state.orderPay);
+  const { loading: loadingPay, success: successPay } = orderPay;
 
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, loading, error } = orderDetails;
@@ -17,16 +25,33 @@ const OrderScreen = ({ match }) => {
   useEffect(() => {
     const addPayPalScript = async () => {
       const { data: clientId } = await axios.get("/api/config/paypal");
-      console.log(clientId);
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+      script.async = true;
+      script.onload = () => {
+        setSdkReady(true);
+      };
+
+      document.body.appendChild(script);
     };
 
-    addPayPalScript();
-
-    if (!order || order._id !== orderId) {
-      disptach(getOrderDetails(orderId));
+    if (!order || successPay) {
+      dispatch({ type: ORDER_PAY_RESET });
+      dispatch(getOrderDetails(orderId));
+    } else if (!order.isPaid) {
+      if (!window.paypal) {
+        addPayPalScript();
+      } else {
+        setSdkReady(true);
+      }
     }
-  }, [disptach, order, orderId]);
+  }, [dispatch, order, orderId, successPay]);
 
+  const successPaymentHandler = (paymentResult) => {
+    dispatch(payOrder(orderId, paymentResult));
+    console.log(paymentResult);
+  };
   //Calculate Prices
   const addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
@@ -149,6 +174,19 @@ const OrderScreen = ({ match }) => {
                 <Col>R {order.totalPrice}</Col>
               </Row>
             </ListGroup.Item>
+            {!order.isPaid && (
+              <ListGroup.Item>
+                {loadingPay && <Loader />}
+                {!sdkReady ? (
+                  <Loader />
+                ) : (
+                  <PayPalButton
+                    amount={order.totalPrice}
+                    onSuccess={successPaymentHandler}
+                  />
+                )}
+              </ListGroup.Item>
+            )}
           </ListGroup>
         </Col>
       </Row>
