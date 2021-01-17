@@ -71,11 +71,20 @@ const updateOrderToPaid = asynchandler(async (req, res) => {
     };
 
     const updatedOrder = await order.save();
-    res.json(updateOrder);
+    res.json(updatedOrder);
   } else {
     res.status(404);
     throw new Error("Order Not Found");
   }
 });
 
-export { addOrderItems, getOrderById, updateOrderToPaid };
+//GET  logged in user orders
+//GET  /api/orders/myorders
+//private
+const getMyOrders = asynchandler(async (req, res) => {
+  const orders = await Order.find({ user: req.user._id });
+  //console console.log("Order");
+  res.json(orders);
+});
+
+export { addOrderItems, getOrderById, updateOrderToPaid, getMyOrders };

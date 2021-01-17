@@ -1,5 +1,8 @@
 import axios from "axios";
 import {
+  MYORDER_LIST_FAIL,
+  MYORDER_LIST_REQUEST,
+  MYORDER_LIST_SUCCESS,
   ORDER_CREATE_FAIL,
   ORDER_CREATE_REQUEST,
   ORDER_CREATE_SUCCESS,
@@ -10,6 +13,7 @@ import {
   ORDER_PAY_SUCCESS,
 } from "../constants/orderConstants";
 
+//Create a new order
 export const createOrder = (order) => async (dispatch, getState) => {
   try {
     dispatch({
@@ -46,6 +50,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
   }
 };
 
+//GET order details from the backend
 export const getOrderDetails = (id) => async (dispatch, getState) => {
   try {
     dispatch({
@@ -81,6 +86,7 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
   }
 };
 
+//Pay send payment info to the backend and get a response
 export const payOrder = (orderId, paymentResult) => async (
   dispatch,
   getState
@@ -116,6 +122,42 @@ export const payOrder = (orderId, paymentResult) => async (
   } catch (error) {
     dispatch({
       type: ORDER_PAY_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+//GET my orders from the backend
+export const listMyOrders = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: MYORDER_LIST_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    //Update data on the database
+    const { data } = await axios.get(`/api/orders/myorders`, config);
+
+    //Response to the Client || FrontEnd
+    dispatch({
+      type: MYORDER_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: MYORDER_LIST_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

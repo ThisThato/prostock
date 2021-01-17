@@ -7,7 +7,7 @@ const reviewSchema = mongoose.Schema(
     comment: { type: String, required: true },
   },
   {
-    timestaps: true,
+    timestamps: true,
   }
 );
 
@@ -61,7 +61,7 @@ const productSchema = mongoose.Schema(
     },
   },
   {
-    timestaps: true,
+    timestamps: true,
   }
 );
 

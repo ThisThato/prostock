@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, Row, Col, FormLabel } from "react-bootstrap";
+import { Form, Button, Row, Col, FormLabel, Table } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { getUserDetails, updateUserProfile } from "../actions/userActions";
+import { listMyOrders } from "../actions/orderActions";
 
 const ProfileScreen = ({ history }) => {
   const [email, setEmail] = useState("");
@@ -22,23 +24,28 @@ const ProfileScreen = ({ history }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  //Use userLogin to check if the user is logged in
+  //Get user data from the backend
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
   const { success } = userUpdateProfile;
+
+  //Get order details from the backend
+  const myOrderList = useSelector((state) => state.myOrderList);
+  const { loading: loadingOrders, error: errorOrders, orders } = myOrderList;
 
   useEffect(() => {
     //If the user has not logged in redirect to login
     if (!userInfo) {
       history.push("/login");
     } else {
-      if (!user.name) {
+      if (!user.name || !user || success) {
         dispatch(getUserDetails("profile"));
+        dispatch(listMyOrders());
       } else {
         setName(user.name);
         setEmail(user.email);
       }
     }
-  }, [user, userInfo, history, dispatch]);
+  }, [dispatch, history, userInfo, user, success]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -56,10 +63,11 @@ const ProfileScreen = ({ history }) => {
       <Col md={4}>
         <h2>User Profile</h2>
         {message && <Message variant='danger'>{message}</Message>}
-        {error && <Message variant='danger'>{error}</Message>}
         {success && <Message variant='success'>Profile Updated</Message>}
         {loading ? (
           <Loader />
+        ) : error ? (
+          <Message variant='danger'>{error}</Message>
         ) : (
           <Form onSubmit={submitHandler}>
             <Form.Group controlId='name'>
@@ -110,6 +118,55 @@ const ProfileScreen = ({ history }) => {
       </Col>
       <Col md={8}>
         <h2>My Orders</h2>
+        {loadingOrders ? (
+          <Loader />
+        ) : errorOrders ? (
+          <Message variant='danger'>{errorOrders}</Message>
+        ) : (
+          <Table striped bordered hover responsive className='table-sm'>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>DATE</th>
+                <th>TOTAL</th>
+                <th>PAID On</th>
+                <th>DELIVERED</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map((order) => (
+                <tr key={order._id}>
+                  <td>{order._id}</td>
+                  {/* <td></td> */}
+                  <td>{order.createdAt.substring(0, 10)}</td>
+                  <td>R{order.totalPrice}</td>
+                  <td>
+                    {order.isPaid ? (
+                      order.paidAt.substring(0, 10)
+                    ) : (
+                      <i className='fas fa-times' style={{ color: "red" }}></i>
+                    )}
+                  </td>
+                  <td>
+                    {order.isDelivered ? (
+                      order.deliveredAt.substring(0, 10)
+                    ) : (
+                      <i className='fas fa-times' style={{ color: "red" }}></i>
+                    )}
+                  </td>
+                  <td>
+                    <LinkContainer to={`/order/${order._id}`}>
+                      <Button className='btn-sm' varaint='light'>
+                        Details
+                      </Button>
+                    </LinkContainer>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
       </Col>
     </Row>
   );
