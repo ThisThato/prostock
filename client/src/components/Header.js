@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
@@ -7,11 +8,12 @@ import { logout } from "../actions/userActions";
 const Header = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
-
+  let history = useHistory();
   const dispatch = useDispatch();
 
   const logoutHandler = () => {
     dispatch(logout());
+    history.push("/");
   };
   return (
     <Fragment>
