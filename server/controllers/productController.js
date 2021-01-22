@@ -75,17 +75,28 @@ const updateProduct = asynchandler(async (req, res) => {
 //POST  /api/products
 //private/Admin
 const createProduct = asynchandler(async (req, res) => {
+ 
+  const { name } = req.body;
+
+  const productExists = await Product.findOne({ name })
+ 
+  if (productExists) {
+    res.status(400);
+    throw new Error("Product already exists");
+  }
+
   const product = new Product({
-    name: "Sample name",
-    price: 0,
+    name: req.body.name,
+    price: req.body.price,
     user: req.user._id,
-    image: "/images/sample.jpg",
-    brand: "Sample brand",
-    category: "Sample category",
-    countInStock: 0,
-    numReviews: 0,
-    description: "Sample description",
+    image: req.body.image,
+    brand: req.body.brand,
+    category: req.body.category,
+    countInStock: req.body.countInStock,
+    numReviews: req.body.numReviews,
+    description: req.body.description,
   });
+
   const createdProduct = await product.save();
   res.status(201).json(createdProduct);
 });
