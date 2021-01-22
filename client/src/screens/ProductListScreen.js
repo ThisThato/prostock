@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Link } from 'react-router-dom'
 import { LinkContainer } from "react-router-bootstrap";
 import { Table, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,12 +36,6 @@ const ProductListScreen = ({ history, match }) => {
     }
   };
 
-  const createProductHandler = (product) => {
-    if (window.confirm("Are you sure you want to create the product?")) {
-      //   dispatch(deleteProduct(id));
-    }
-  };
-
   return (
     <>
       <Row className='align-items-center'>
@@ -48,9 +43,9 @@ const ProductListScreen = ({ history, match }) => {
           <h1>Products</h1>
         </Col>
         <Col className='text-right'>
-          <Button className='my-3' onClick={createProductHandler}>
+          <Link className='btn btn-light my-3' to='/admin/create'>
             <i className='fas fa-plus'></i> Create Product
-          </Button>
+          </Link>
         </Col>
       </Row>
       {loadingDelete && <Loader />}

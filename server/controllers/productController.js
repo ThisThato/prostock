@@ -76,14 +76,14 @@ const updateProduct = asynchandler(async (req, res) => {
 //private/Admin
 const createProduct = asynchandler(async (req, res) => {
  
-  const { name } = req.body;
+  // const { name } = req.body;
 
-  const productExists = await Product.findOne({ name })
+  // const productExists = await Product.findOne({ name })
  
-  if (productExists) {
-    res.status(400);
-    throw new Error("Product already exists");
-  }
+  // if (productExists) {
+  //   res.status(400);
+  //   throw new Error("Product already exists");
+  // }
 
   const product = new Product({
     name: req.body.name,
