@@ -109,7 +109,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // GET  All Users
 // GET  /api/users
 // private/admin
-const getUsers = asyncHandler(async (req, res) => {
+const getUsers = asyncHandler(async ( res) => {
   const users = await User.find({});
   res.json(users);
 });

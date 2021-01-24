@@ -7,7 +7,7 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { ListProducts, DeleteProduct } from "../actions/productActions";
 
-const ProductListScreen = ({ history, match }) => {
+const ProductListScreen = ({ history }) => {
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.productList);
   const { loading, error, products } = productList;
@@ -43,7 +43,7 @@ const ProductListScreen = ({ history, match }) => {
           <h1>Products</h1>
         </Col>
         <Col className='text-right'>
-          <Link className='btn btn-light my-3' to='/admin/product/create'>
+          <Link className='btn btn-light my-3' to='/admin/products/create'>
             <i className='fas fa-plus'></i> Create Product
           </Link>
         </Col>

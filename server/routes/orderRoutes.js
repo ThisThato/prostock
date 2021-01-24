@@ -3,15 +3,16 @@ const router = express.Router();
 import {
   addOrderItems,
   getMyOrders,
+  getOrders,
   updateOrderToPaid,
 } from "../controllers/orderController.js";
 import { getOrderById } from "../controllers/orderController.js";
-import { protect } from "../middleware/authMiddleware.js";
+import { protect, admin } from "../middleware/authMiddleware.js";
 
-//Fetch all products
-//GET  /api/products
+//Fetch all orders
+//GET  /api/orders
 //public
-router.route("/").post(protect, addOrderItems);
+router.route("/").post(protect, addOrderItems).get(protect, admin, getOrders);
 
 //GET  logged in user orders
 //GET  /api/orders/myorders
