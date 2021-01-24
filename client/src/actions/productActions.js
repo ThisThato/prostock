@@ -103,8 +103,8 @@ export const CreateProduct = (
   brand,
   category,
   description,
+  numReviews,
   countInStock) => async (dispatch, getState) => {
-
 
   try {
     dispatch({
@@ -128,6 +128,7 @@ export const CreateProduct = (
     brand,
     category,
     description,
+    numReviews,
     countInStock}, config);
 
     //Response to the Client || FrontEnd

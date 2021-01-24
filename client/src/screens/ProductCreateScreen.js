@@ -30,8 +30,8 @@ const ProductCreateScreen = ({  history }) => {
   } = productCreate
 
   useEffect(() => {
+    dispatch({ type: PRODUCT_CREATE_RESET })
     if (successCreate) {
-      dispatch({ type: PRODUCT_CREATE_RESET })
       history.push('/admin/productlist')
     } 
   }, [dispatch, history, successCreate])
@@ -62,7 +62,7 @@ const ProductCreateScreen = ({  history }) => {
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(
-      CreateProduct({
+      CreateProduct(
         name,
         price,
         image,
@@ -70,7 +70,7 @@ const ProductCreateScreen = ({  history }) => {
         category,
         description,
         countInStock
-      })
+      )
     )
   }
 

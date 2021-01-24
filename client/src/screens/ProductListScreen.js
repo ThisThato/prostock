@@ -43,7 +43,7 @@ const ProductListScreen = ({ history, match }) => {
           <h1>Products</h1>
         </Col>
         <Col className='text-right'>
-          <Link className='btn btn-light my-3' to='/admin/create'>
+          <Link className='btn btn-light my-3' to='/admin/product/create'>
             <i className='fas fa-plus'></i> Create Product
           </Link>
         </Col>
