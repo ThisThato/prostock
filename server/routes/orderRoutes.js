@@ -5,8 +5,8 @@ import {
   getMyOrders,
   getOrders,
   updateOrderToPaid,
+  getOrderById, updateOrderToDelivered 
 } from "../controllers/orderController.js";
-import { getOrderById } from "../controllers/orderController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
 //Fetch all orders
@@ -23,6 +23,12 @@ router.route("/myorders").get(protect, getMyOrders);
 //GET  /api/orders
 //public
 router.route("/:id").get(protect, getOrderById);
+
+
+//UPDATE order to delivered
+//GET  /api/orders/:id/deliver
+//private
+router.route("/:id/deliver").put(protect, admin, updateOrderToDelivered);
 
 //UPDATE order to paid
 //GET  /api/orders/:id/pay
