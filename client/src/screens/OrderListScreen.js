@@ -44,7 +44,7 @@ const OrderListScreen = ({ history }) => {
                 <th>USER</th>
                 <th>DATE</th>
                 <th>TOTAL</th>
-                <th>PAID On</th>
+                <th>PAID</th>
                 <th>DELIVERED</th>
                 <th></th>
               </tr>
@@ -71,7 +71,7 @@ const OrderListScreen = ({ history }) => {
                     )}
                   </td>
                   <td>
-                    <LinkContainer to={`/admin/order/${order._id}`}>
+                    <LinkContainer to={`/order/${order._id}`}>
                       <Button className='btn-sm' varaint='light'>
                         Details
                       </Button>

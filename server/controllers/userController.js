@@ -109,7 +109,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // GET  All Users
 // GET  /api/users
 // private/admin
-const getUsers = asyncHandler(async ( res) => {
+const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find({});
   res.json(users);
 });
@@ -147,6 +147,7 @@ const getUserById = asyncHandler(async (req, res) => {
 // PUT  /api/users/:id
 // private
 const updateUser = asyncHandler(async (req, res) => {
+
   const user = await User.findById(req.params.id);
 
   // console.log(user.name);
