@@ -234,7 +234,7 @@ export const deliverOrder = (order) => async (
 
     //Update data on the database
     const { data } = await axios.put(
-      `/api/orders/${order._id}/deliver`,
+      `/api/orders/${order._id}/deliver`,{},
       config
     );
 

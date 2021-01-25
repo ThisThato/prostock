@@ -66,7 +66,7 @@ const OrderScreen = ({ match }) => {
   };
 
   
-  const deliverHandler = (order) => {
+  const deliverHandler = () => {
     dispatch(deliverOrder(order));
   };
 
