@@ -10,8 +10,11 @@ import generateToken from "../utils/generateToken.js";
 // POST  /api/users
 // public
 const registerUser = asyncHandler(async (req, res) => {
+
+  //Destructure data recieved from the client
   const { email, password, name } = req.body;
 
+  //check if the user already exists
   const userExists = await User.findOne({ email });
 
   if (userExists) {
@@ -21,6 +24,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   const user = await User.create({ name, email, password });
 
+  //send a user response to the client
   if (user) {
     res.status(201).json({
       _id: user._id,
