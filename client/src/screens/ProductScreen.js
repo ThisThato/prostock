@@ -13,25 +13,45 @@ import {
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import Rating from "../components/Rating";
-import { ListProductDetails } from "../actions/productActions";
+import { ListProductDetails, createProductReview } from "../actions/productActions";
+import {PRODUCT_CREATE_REVIEW_RESET} from '../constants/productConstants'
 
 const ProductScreen = ({ match, history }) => {
   const [qty, setQty] = useState(1);
 
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+
   const dispatch = useDispatch();
-
   const productDetails = useSelector((state) => state.productDetails);
-
   const { loading, error, product } = productDetails;
 
+    const userLogin = useSelector((state) => state.userLogin);
+  const {userInfo} = userLogin;
+
+  //reviewProduct comes from the reducer(store.js)
+  const reviewProduct = useSelector((state) => state.reviewProduct);
+  const { loading: loadingReview, error: errorReview, success: successReview } = reviewProduct;
+
   useEffect(() => {
+    if(successReview){
+      alert('Review submited')
+      setRating(0)
+      setComment('')
+    }
     dispatch(ListProductDetails(match.params.id));
-  }, [dispatch, match]);
+     // dispatch(PRODUCT_CREATE_REVIEW_RESET)
+  }, [dispatch, match, successReview]);
 
   const addToCartHandler = () => {
     //Redirects to the CartScreeen Component
     history.push(`/cart/${match.params.id}?qty=${qty}`);
   };
+
+  const submitHandler=(e) =>{
+    e.preventDefault()
+    dispatch(createProductReview(match.params.id, {rating,comment}))
+  }
 
   return (
     <div>
@@ -43,6 +63,7 @@ const ProductScreen = ({ match, history }) => {
       ) : error ? (
         <Message variant='danger'>{error}</Message>
       ) : (
+        <>
         <Row>
           <Col md={6}>
             <Image src={product.image} alt={product.name} fluid />
@@ -119,6 +140,49 @@ const ProductScreen = ({ match, history }) => {
             </Card>
           </Col>
         </Row>
+        <Row>
+          <Col md={6}>
+            <h2>Reviews</h2>{
+              product.reviews.length === 0 && <Message>No Reviews</Message>
+              
+            }
+            <ListGroup variant='flush'>
+              {product.reviews.map(r => (<ListGroup.Item key={r._id}>
+                <strong>{r.name}</strong>
+                <Rating value={r.rating}/>
+                <p>{r.createdAt.substring(0, 10)}</p>
+                <p>{r.comment}</p>
+              </ListGroup.Item>))}
+              <ListGroup.Item>
+                <h2>Write a customer reivew</h2>
+                {loadingReview && <Loader/>}
+                {errorReview && <Message variant='danger'>{errorReview}</Message>}
+                {userInfo ? (
+                  <Form onSubmit={submitHandler}>
+                    <Form.Group controlId='rating'>
+                      <Form.Label>Rating</Form.Label>
+                      <Form.Control as='select' value={rating} onChange={(e) => setRating(e.target.value)}>
+
+                      <option value=''>Select..</option>
+                      <option value='1'>1 - Poor</option>
+                      <option value='2'>2- Fair</option>
+                      <option value='3'>3 - Good</option>
+                      <option value='4'>4 - Very Good</option>
+                      <option value='5'>5 - Excellent</option>
+                      </Form.Control>
+                    </Form.Group>
+                    <Form.Group controlId='comment'>
+                      <Form.Label>Comment</Form.Label>
+                      <Form.Control as='textarea' value={comment} row='3' onChange={(e) => setComment(e.target.value)}></Form.Control>
+                    </Form.Group>
+                    <Button type='submit' variant='primary'>Submit</Button>
+                  </Form>
+                ):  <Message>Please <Link to='/login'>login to Write a Review</Link></Message>}
+              </ListGroup.Item>
+            </ListGroup>
+          </Col>
+        </Row>
+        </>
       )}
     </div>
   );
