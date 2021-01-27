@@ -11,6 +11,7 @@ import {
   Form,
 } from "react-bootstrap";
 import Loader from "../components/Loader";
+import Meta from "../components/Meta";
 import Message from "../components/Message";
 import Rating from "../components/Rating";
 import { ListProductDetails, createProductReview } from "../actions/productActions";
@@ -55,6 +56,7 @@ const ProductScreen = ({ match, history }) => {
 
   return (
     <div>
+      <Meta title={product.name}/>
       <Link className='btn btn-light my-3' to='/'>
         Go back
       </Link>

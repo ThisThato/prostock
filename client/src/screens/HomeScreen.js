@@ -8,6 +8,7 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import Paginate from '../components/Paginate'
 import ProductCarousel from '../components/ProductCaurosel'
+import Meta from '../components/Meta'
 
 const HomeScreen = ({match}) => {
 
@@ -25,6 +26,7 @@ const HomeScreen = ({match}) => {
 
   return (
     <>
+    <Meta title='Welcome to ProStock | Home'/>
     {
       !keyword ? (
         <ProductCarousel />
@@ -50,6 +52,7 @@ const HomeScreen = ({match}) => {
         <Paginate pages={pages} page={page} keyword={keyword ? keyword : ''}/>
         </>
       )}
+
     </>
   );
 };
