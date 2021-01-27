@@ -6,7 +6,8 @@ import {
   deleteProduct,
   updateProduct,
   createProduct,
-  createProductReview
+  createProductReview,
+  getTopProducts
 } from "../controllers/productController.js";
 const router = express.Router();
 
@@ -14,6 +15,15 @@ const router = express.Router();
 //GET  /api/products
 //public
 router.route("/").get(getProducts).post(protect, admin, createProduct);
+
+
+  //Create a new Review
+//POST  /api/products/:id/reviews
+router.route('/:id/reviews').post(protect, createProductReview)
+
+  //Create a new Review
+//POST  /api/products/top
+router.route('/top').get(getTopProducts)
 
 //Fetch product by ID
 //GET  /api/product/:id
@@ -24,8 +34,5 @@ router
   .delete(protect, admin, deleteProduct)
   .put(protect, admin, updateProduct);
 
-  //Create a new Review
-//POST  /api/products/:id/reviews
-router.route('/:id/reviews').post(protect, createProductReview)
 
 export default router;
