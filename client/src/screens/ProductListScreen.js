@@ -6,11 +6,15 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { ListProducts, DeleteProduct } from "../actions/productActions";
+import Paginate from '../components/Paginate'
 
-const ProductListScreen = ({ history }) => {
+const ProductListScreen = ({ history, match }) => {
+
+  const pageNumber = match.params.pageNumber || 1
+
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.productList);
-  const { loading, error, products } = productList;
+  const { loading, error, products, page, pages } = productList;
 
   const productDelete = useSelector((state) => state.productDelete);
   const {
@@ -24,11 +28,11 @@ const ProductListScreen = ({ history }) => {
 
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
-      dispatch(ListProducts());
+      dispatch(ListProducts('', pageNumber));
     } else {
       history.push("/login");
     }
-  }, [dispatch, history, userInfo, successDelete]);
+  }, [dispatch, history, userInfo, successDelete, pageNumber]);
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure you want to delete the product?")) {
@@ -55,6 +59,7 @@ const ProductListScreen = ({ history }) => {
       ) : error ? (
         <Message variant='danger'>{error}</Message>
       ) : (
+        <>
         <Table striped bordered hover responsive className='table-sm'>
           <thead>
             <tr>
@@ -92,6 +97,8 @@ const ProductListScreen = ({ history }) => {
             ))}
           </tbody>
         </Table>
+        <Paginate pages={pages} page={page} isAdmin={true}/>
+        </>
       )}
     </>
   );

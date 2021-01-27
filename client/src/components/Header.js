@@ -7,6 +7,8 @@ import { logout } from "../actions/userActions";
 import SearchBox from '../components/SearchBox'
 
 const Header = () => {
+
+  //const pageNumber = match.params.pageNumber || 1
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   let history = useHistory();
@@ -55,7 +57,7 @@ const Header = () => {
                     <LinkContainer to='/admin/userlist'>
                       <NavDropdown.Item>Users</NavDropdown.Item>
                     </LinkContainer>
-                    <LinkContainer to='/admin/productlist'>
+                    <LinkContainer to={`/admin/productlist/${1}`}>
                       <NavDropdown.Item>Products</NavDropdown.Item>
                     </LinkContainer>
                     <LinkContainer to='/admin/orderlist'>
