@@ -6,6 +6,7 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { Login } from "../actions/userActions";
 import FormContainer from "../components/FormContainer";
+import Meta from '../components/Meta'
 
 const LoginScreen = ({ location, history }) => {
   const [email, setEmail] = useState("");
@@ -30,6 +31,8 @@ const LoginScreen = ({ location, history }) => {
   };
 
   return (
+    <>
+    <Meta title='ProStock | Sign In'/>
     <FormContainer>
       <h1>Sign In</h1>
       {error && <Message variant='danger'>{error}</Message>}
@@ -67,6 +70,7 @@ const LoginScreen = ({ location, history }) => {
         </Col>
       </Row>
     </FormContainer>
+    </>
   );
 };
 export default LoginScreen;

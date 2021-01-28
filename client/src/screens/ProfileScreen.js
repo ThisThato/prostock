@@ -6,7 +6,8 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { getUserDetails, updateUserProfile } from "../actions/userActions";
 import { listMyOrders } from "../actions/orderActions";
-import {USER_UPDATE_PROFILE_RESET, USER_UPDATE__PROFILE_RESET} from '../constants/userConstants'
+import {USER_UPDATE_PROFILE_RESET} from '../constants/userConstants'
+import Meta from '../components/Meta'
 
 const ProfileScreen = ({ history }) => {
   const [email, setEmail] = useState("");
@@ -61,6 +62,9 @@ const ProfileScreen = ({ history }) => {
   };
 
   return (
+    <>
+
+    <Meta title={`Profile | ${user.name}`}/>
     <Row>
       <Col md={4}>
         <h2>User Profile</h2>
@@ -171,6 +175,7 @@ const ProfileScreen = ({ history }) => {
         )}
       </Col>
     </Row>
+    </>
   );
 };
 

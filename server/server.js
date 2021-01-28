@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import path from 'path'
 import bodyParser from "body-parser";
 import colors from "colours";
 import morgan from 'morgan'
@@ -18,9 +19,9 @@ if(process.env.NODE_ENV === 'development'){
   app.use(morgan('dev'))
 }
 
-app.get("/", (req, res) => {
-  res.send("API is running...");
-});
+// app.get("/", (req, res) => {
+//   res.send("API is running...");
+// });
 
 //body-parser for Post requests
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -34,6 +35,18 @@ app.use("/api/orders", orderRoutes);
 app.get("/api/config/paypal", (req, res) =>
   res.send(process.env.PAYPAL_CLIENT_ID)
 );
+
+const __dirname = path.resolve()
+
+if(process.env.NODE_ENV === 'production'){
+    app.use(express.static(path.join(__dirname, '/client/build')))
+    app.get('*', (req, res) => res.sendFile(path.reslove(__dirname, 'client', 'build', 'index.html')))
+}else{
+   app.get("/", (req, res) => {
+   res.send("API is running...");
+ });
+
+}
 
 //Middleware error catching
 app.use(notFound);

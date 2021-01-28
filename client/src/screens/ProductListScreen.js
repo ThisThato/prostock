@@ -7,6 +7,7 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { ListProducts, DeleteProduct } from "../actions/productActions";
 import Paginate from '../components/Paginate'
+import Meta from '../components/Meta'
 
 const ProductListScreen = ({ history, match }) => {
 
@@ -42,6 +43,8 @@ const ProductListScreen = ({ history, match }) => {
 
   return (
     <>
+
+    <Meta title='Products'/>
       <Row className='align-items-center'>
         <Col>
           <h1>Products</h1>

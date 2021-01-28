@@ -8,6 +8,7 @@ import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import { CreateProduct } from '../actions/productActions'
 import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
+import Meta from '../components/Meta'
 
 const ProductCreateScreen = ({  history }) => {
 
@@ -32,7 +33,7 @@ const ProductCreateScreen = ({  history }) => {
   useEffect(() => {
     dispatch({ type: PRODUCT_CREATE_RESET })
     if (successCreate) {
-      history.push('/admin/productlist')
+      history.push(`/admin/productlist/${1}`)
     } 
   }, [dispatch, history, successCreate])
 
@@ -76,7 +77,8 @@ const ProductCreateScreen = ({  history }) => {
 
   return (
     <>
-      <Link to='/admin/productlist' className='btn btn-light my-3'>
+    <Meta title='Add a Product'/>
+    <Link to={`/admin/productlist/${1}`} className='btn btn-light my-3'>
         Go Back
       </Link>
       <FormContainer>
